@@ -52,20 +52,28 @@ export const extractData = ($: CheerioAPI) => {
 };
 
 export const sendToDiscord = async(news: News[]) => {
-
+  const fields = news.slice(0, 25).map(n => ({
+    name: n.title,
+    value: n.url,
+    inline: false,
+  }));
 
   const payload = {
-    content: `📰 ${news.length} new post${news.length > 1 ? 's' : ''}`,
-    embeds: news.map(n => ({ ...n, color: 3447003})),
-  }
+    embeds: [{
+      title: "Νέες Ανακοινώσεις",
+      color: 3447003,
+      fields: fields,
+      timestamp: new Date().toISOString(),
+    }]
+  };
 
   try {
-      await axios.post(process.env.DISCORD_WEBHOOK, payload);
-      console.log(`Sent ${news.length} posts to Discord`);
-    } catch (error) {
-      console.error('Failed to send to Discord:', error);
-      throw error;
-    }
+    await axios.post(process.env.DISCORD_WEBHOOK, payload);
+    console.log(`Sent ${news.length} posts to Discord`);
+  } catch (error) {
+    console.error('Failed to send to Discord:', error);
+    throw error;
+  }
 }
 
 export const loadHashFromFile = () => {
