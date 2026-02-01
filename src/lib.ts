@@ -52,7 +52,7 @@ export const extractData = ($: CheerioAPI) => {
 };
 
 export const sendToDiscord = async(news: News[]) => {
-  const fields = news.slice(0, 25).map(n => ({
+  const fields = news.map(n => ({
     name: n.title,
     value: n.url,
     inline: false,
@@ -60,7 +60,7 @@ export const sendToDiscord = async(news: News[]) => {
 
   const payload = {
     embeds: [{
-      title: "Νέες Ανακοινώσεις",
+      title: news.length ? "Νέες Ανακοινώσεις" : "Δεν υπάρχουν νέες ανακοινώσεις",
       color: 3447003,
       fields: fields,
       timestamp: new Date().toISOString(),
