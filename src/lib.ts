@@ -52,6 +52,8 @@ export const extractData = ($: CheerioAPI) => {
 };
 
 export const sendToDiscord = async(news: News[]) => {
+  if (!news.length) return;
+  
   const fields = news.map(n => ({
     name: n.title,
     value: n.url,
